@@ -89,11 +89,6 @@ pipeline {
             }
         }
 
-	stage('Debug') {
-	steps {
-		echo "${env.BRANCH_NAME}"
-	    }
-	}
 
         stage('Deploy to Prod') {
             when {
