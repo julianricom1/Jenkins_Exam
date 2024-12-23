@@ -88,6 +88,16 @@ pipeline {
             }
         }
 
+	stage('Debug') {
+	    steps {
+		echo "BRANCH_NAME: ${env.BRANCH_NAME}"
+		echo "GIT_BRANCH: ${env.GIT_BRANCH}"
+	    }
+	}
+
+
+
+
         stage('Deploy to Prod') {
             when {
                 branch 'master'
