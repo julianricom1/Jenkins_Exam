@@ -89,9 +89,13 @@ pipeline {
             }
         }
 
+	stage('Debug') {
+	echo ${env.BRANCH_NAME}
+	}
+
         stage('Deploy to Prod') {
             when {
-                expression {env.BRANCH_NAME == 'master'}
+                expression ${env.BRANCH_NAME} == 'master}
             }
             steps {
                 input message: 'Approve deployment to Production?', ok: 'Deploy'
