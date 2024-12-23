@@ -8,6 +8,7 @@ pipeline {
         K8S_NAMESPACE_QA = "qa"
         K8S_NAMESPACE_STAGING = "staging"
         K8S_NAMESPACE_PROD = "prod"
+	KUBECONFIG = credentiales("config")
     }
 
     stages {
