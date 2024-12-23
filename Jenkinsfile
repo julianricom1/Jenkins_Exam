@@ -92,6 +92,7 @@ pipeline {
         stage('Deploy to Prod') {
             when {
   //              expression {BRANCH_NAME == 'master'}
+		true
             }
             steps {
                 echo 'Deploying to Production environment...'
