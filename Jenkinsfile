@@ -8,7 +8,7 @@ pipeline {
         K8S_NAMESPACE_QA = "qa"
         K8S_NAMESPACE_STAGING = "staging"
         K8S_NAMESPACE_PROD = "prod"
-	KUBECONFIG = credentials("config")
+        KUBECONFIG = credentials("config")
     }
 
     stages {
@@ -36,10 +36,10 @@ pipeline {
                             sh "docker tag ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER} ${DOCKER_IMAGE_CAST}:latest"
                             withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                                 sh """
-				echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                                 docker push ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER}
                                 docker push ${DOCKER_IMAGE_CAST}:latest
-				"""
+                                """
                             }
                         }
                     }
@@ -53,10 +53,10 @@ pipeline {
                             sh "docker tag ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER} ${DOCKER_IMAGE_MOVIE}:latest"
                             withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                                 sh """
-				echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                                 docker push ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER}
                                 docker push ${DOCKER_IMAGE_MOVIE}:latest
-				"""
+                                """
                             }
                         }
                     }
@@ -88,13 +88,12 @@ pipeline {
             }
         }
 
-
         stage('Deploy to Prod') {
             when {
-  //              expression {BRANCH_NAME == 'master'}
-		true
+                branch 'master'
             }
             steps {
+                input message: 'Approve deployment to Production?', ok: 'Deploy'
                 echo 'Deploying to Production environment...'
                 sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30400"
                 sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30401"
