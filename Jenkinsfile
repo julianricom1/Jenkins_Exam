@@ -90,7 +90,7 @@ pipeline {
 
         stage('Deploy to Prod') {
             when {
-                BRANCH_NAME == 'master'
+                expression {BRANCH_NAME == 'master'}
             }
             steps {
                 input message: 'Approve deployment to Production?', ok: 'Deploy'
