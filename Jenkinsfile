@@ -96,9 +96,9 @@ pipeline {
 	}
 
         stage('Deploy to Prod') {
-            #when {
-                #expression ${env.BRANCH_NAME == 'master'}
-            #}
+            when {
+                expression ${env.BRANCH_NAME == 'master'}
+            }
             steps {
                 input message: 'Approve deployment to Production?', ok: 'Deploy'
                 echo 'Deploying to Production environment...'
