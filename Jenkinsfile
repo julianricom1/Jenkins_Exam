@@ -90,9 +90,9 @@ pipeline {
 
 
         stage('Deploy to Prod') {
-//            when {
+            when {
   //              expression {BRANCH_NAME == 'master'}
-    //        }
+            }
             steps {
                 echo 'Deploying to Production environment...'
                 sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30400"
