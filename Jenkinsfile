@@ -85,12 +85,13 @@ pipeline {
                 echo 'Deploying to Staging environment...'
                 sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30300"
                 sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30301"
+		sh 'echo "Current branch: ${env.BRANCH_NAME}"'
             }
         }
 
-        stage('Manual Deploy to Prod') {
+        stage('Deploy to Prod') {
             when {
-                branch 'master'
+                expression {env.BRANCH_NAME == 'master'}
             }
             steps {
                 input message: 'Approve deployment to Production?', ok: 'Deploy'
