@@ -33,10 +33,12 @@ pipeline {
                             echo 'Building and pushing Cast Service Docker image...'
                             sh "docker build -t ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER} ."
                             sh "docker tag ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER} ${DOCKER_IMAGE_CAST}:latest"
-                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
-                                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                                sh "docker push ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER}"
-                                sh "docker push ${DOCKER_IMAGE_CAST}:latest"
+                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                                sh """
+				echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                                docker push ${DOCKER_IMAGE_CAST}:${env.BUILD_NUMBER}
+                                docker push ${DOCKER_IMAGE_CAST}:latest
+				"""
                             }
                         }
                     }
@@ -48,10 +50,12 @@ pipeline {
                             echo 'Building and pushing Movie Service Docker image...'
                             sh "docker build -t ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER} ."
                             sh "docker tag ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER} ${DOCKER_IMAGE_MOVIE}:latest"
-                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
-                                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                                sh "docker push ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER}"
-                                sh "docker push ${DOCKER_IMAGE_MOVIE}:latest"
+                            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                                sh """
+				echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                                docker push ${DOCKER_IMAGE_MOVIE}:${env.BUILD_NUMBER}
+                                docker push ${DOCKER_IMAGE_MOVIE}:latest
+				"""
                             }
                         }
                     }
