@@ -67,24 +67,24 @@ pipeline {
         stage('Deploy to Dev') {
             steps {
                 echo 'Deploying to Dev environment...'
-                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_DEV} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER}"
-                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_DEV} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER}"
+                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_DEV} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30100"
+                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_DEV} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30101"
             }
         }
 
         stage('Deploy to QA') {
             steps {
                 echo 'Deploying to QA environment...'
-                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_QA} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER}"
-                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_QA} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER}"
+                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_QA} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30200"
+                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_QA} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30201"
             }
         }
 
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging environment...'
-                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER}"
-                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER}"
+                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30300"
+                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_STAGING} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30301"
             }
         }
 
@@ -95,8 +95,8 @@ pipeline {
             steps {
                 input message: 'Approve deployment to Production?', ok: 'Deploy'
                 echo 'Deploying to Production environment...'
-                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER}"
-                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER}"
+                sh "helm upgrade --install cast-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_CAST},image.tag=${env.BUILD_NUMBER},service.nodePort=30400"
+                sh "helm upgrade --install movie-service ./Jenkins_devops_exams/charts -n ${K8S_NAMESPACE_PROD} --set image.repository=${DOCKER_IMAGE_MOVIE},image.tag=${env.BUILD_NUMBER},service.nodePort=30401"
             }
         }
     }
