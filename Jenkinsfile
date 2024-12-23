@@ -88,16 +88,7 @@ pipeline {
             }
         }
 
-	stage('Debug') {
-	    steps {
-		echo "BRANCH_NAME: ${env.BRANCH_NAME}"
-		echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-	    }
-	}
-
-
-
-
+ran
         stage('Deploy to Prod') {
             when {
                 expression { env.GIT_BRANCH == 'origin/master' }
@@ -116,7 +107,7 @@ pipeline {
             echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline execution failed!'
+            echo 'Pipeline failed!'
         }
     }
 }
